@@ -5,4 +5,7 @@
     <string name="price_asc">Цена: сначала дешевые</string>
     <string name="price_desc">Цена: сначала дорогие</string>
     <string name="price_by_default">По умолчание</string>
+    <string name="stores">Магазины</string>
+    <string name="brands">Бренды</string>
+    <string name="filter">Фильтр</string>
 </resources>

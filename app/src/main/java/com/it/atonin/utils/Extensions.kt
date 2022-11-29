@@ -1,7 +1,13 @@
 package com.it.atonin.utils
 
+import android.annotation.SuppressLint
 import android.content.SharedPreferences
+import android.view.Gravity
 import android.widget.ImageView
+import androidx.annotation.IdRes
+import androidx.drawerlayout.widget.DrawerLayout
+import androidx.fragment.app.Fragment
+import androidx.navigation.Navigation
 import com.bumptech.glide.Glide
 import com.it.atonin.R
 
@@ -39,6 +45,24 @@ inline fun <reified T> SharedPreferences.put(key: String, value: T) {
         }
     }
     editor.apply()
+}
+
+fun Fragment.getFragmentNavController(@IdRes id: Int) = activity?.let {
+    return@let Navigation.findNavController(it, id)
+}
+
+@SuppressLint("RtlHardcoded")
+fun DrawerLayout.hide() {
+    if (isDrawerOpen(Gravity.RIGHT)) closeDrawer(
+        Gravity.RIGHT
+    )
+}
+
+@SuppressLint("RtlHardcoded")
+fun DrawerLayout.show() {
+    if (!isDrawerOpen(Gravity.RIGHT)) openDrawer(
+        Gravity.RIGHT
+    )
 }
 
 fun ImageView.setImage(url: String) {

@@ -10,5 +10,6 @@ data class Brand(
     @ColumnInfo(name = "name") val name: String,
     @ColumnInfo(name = "image") val image: String?,
     @ColumnInfo(name = "owner_id") val ownerId: Int,
-    @ColumnInfo(name = "invented_date") val invented_date: String
-)
+    @ColumnInfo(name = "invented_date") val invented_date: String,
+
+    ) : FilterUIModel()

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/filterMainFragment">
+
+    <fragment
+        android:id="@+id/filterBrandListFragment"
+        android:name="com.it.atonin.ui.home.filter.FilterBrandListFragment"
+        android:label="fragment_filter_list"
+        tools:layout="@layout/fragment_filter_brand_list" />
+    <fragment
+        android:id="@+id/filterMainFragment"
+        android:name="com.it.atonin.ui.home.filter.FilterMainFragment"
+        android:label="fragment_filter_main"
+        tools:layout="@layout/fragment_filter_main" />
+    <fragment
+        android:id="@+id/filterStoreListFragment"
+        android:name="com.it.atonin.ui.home.filter.FilterStoreListFragment"
+        android:label="FilterStoreListFragment" />
+</navigation>

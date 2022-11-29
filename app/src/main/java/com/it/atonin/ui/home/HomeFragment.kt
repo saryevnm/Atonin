@@ -1,8 +1,11 @@
 package com.it.atonin.ui.home
 
+import android.annotation.SuppressLint
+import android.view.Gravity
 import android.view.MenuItem
 import android.widget.PopupMenu
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.it.atonin.R
 import com.it.atonin.databinding.FragmentHomeBinding
@@ -10,13 +13,15 @@ import com.it.atonin.enum.SortTypes
 import com.it.atonin.model.Product
 import com.it.atonin.ui.base.BaseFragment
 import com.it.atonin.ui.home.adapter.ProductAdapter
+import com.it.atonin.utils.show
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
+@SuppressLint("RtlHardcoded")
 class HomeFragment : BaseFragment<FragmentHomeBinding>(), PopupMenu.OnMenuItemClickListener {
 
-    private val homeViewModel: HomeViewModel by viewModel()
+    private val homeViewModel: HomeViewModel by sharedViewModel()
 
     private val productAdapter by lazy {
         ProductAdapter {
@@ -27,15 +32,22 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), PopupMenu.OnMenuItemCl
     override fun setupView() {
         homeViewModel.getProducts()
         initProductList()
+        with(binding) {
 
-        binding.sortTypeTxt.setOnClickListener {
-            val popUp = PopupMenu(context, it)
-            with(popUp) {
-                setOnMenuItemClickListener(this@HomeFragment)
-                inflate(R.menu.menu_sort_list)
-                show()
+            filterBtn.setOnClickListener {
+                drawerLayout.show()
+            }
+
+            sortTypeTxt.setOnClickListener {
+                val popUp = PopupMenu(context, it)
+                with(popUp) {
+                    setOnMenuItemClickListener(this@HomeFragment)
+                    inflate(R.menu.menu_sort_list)
+                    show()
+                }
             }
         }
+
     }
 
     private fun initProductList() {
@@ -70,6 +82,19 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), PopupMenu.OnMenuItemCl
         lifecycleScope.launch {
             homeViewModel.flowProducts.collectLatest {
                 productAdapter.submitList(ArrayList(it))
+            }
+        }
+
+        homeViewModel.onBackPressed.observe(viewLifecycleOwner) {
+            with(binding.drawerLayout) {
+                when {
+                    isDrawerOpen(Gravity.RIGHT) -> {
+                        closeDrawer(Gravity.RIGHT)
+                    }
+                    else -> {
+                        findNavController().popBackStack()
+                    }
+                }
             }
         }
     }

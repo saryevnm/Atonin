@@ -9,6 +9,6 @@ data class Store(
     @PrimaryKey val id: Int,
     @ColumnInfo(name = "name") val name: String,
     @ColumnInfo(name = "owner_id") val ownerId: Int,
-    @ColumnInfo(name = "phone_number") val phoneNumber: String="",
-    @ColumnInfo(name = "address") val address: String="",
-)
+    @ColumnInfo(name = "phone_number") val phoneNumber: String = "",
+    @ColumnInfo(name = "address") val address: String = "",
+):FilterUIModel()

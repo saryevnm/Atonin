@@ -65,13 +65,13 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             repeat(3) {
                 addStore(
                     Store(
-                        storeId, "name $storeId", 0, "+996509803311", "bishkek"
+                        storeId, "store $storeId", 0, "+996509803311", "bishkek"
                     )
                 )
                 repeat(3) {
                     db.getBrandDao().addBrand(
                         Brand(
-                            brandId, "name $brandId", null, brandId, "date $brandId"
+                            brandId, "brand $brandId", null, brandId, "date $brandId"
                         )
                     )
                     db.getProductDao().addProduct(

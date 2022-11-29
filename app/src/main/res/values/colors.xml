@@ -5,6 +5,9 @@
     <color name="purple_700">#FF3700B3</color>
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
+    <color name="explosive_grey">#C4C4C4</color>
+    <color name="primary_brand_blue">#298EEA</color>
+    <color name="snowbank_grey">#E9E9E9</color>
     <color name="black">#FF000000</color>
     <color name="black_opacity">#353333</color>
     <color name="white">#FFFFFFFF</color>

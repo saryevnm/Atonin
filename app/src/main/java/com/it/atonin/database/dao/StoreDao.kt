@@ -16,4 +16,6 @@ interface StoreDao {
     @Query("SELECT * FROM STORE WHERE owner_id =:userId")
     fun getStoresOfUser(userId: Int): Flow<List<Store>>
 
+    @Query("SELECT * FROM STORE")
+    fun getStores(): Flow<List<Store>>
 }
