@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/expensive_ones"
+        android:title="@string/price_desc" />
+    <item
+        android:id="@+id/cheap_ones"
+        android:title="@string/price_asc" />
+
+</menu>

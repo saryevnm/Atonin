@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Atonin</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="price_asc">Цена: сначала дешевые</string>
+    <string name="price_desc">Цена: сначала дорогие</string>
+    <string name="price_by_default">По умолчание</string>
+</resources>
