@@ -1,5 +1,6 @@
 package com.it.atonin.ui.profile
 
+import android.annotation.SuppressLint
 import androidx.lifecycle.lifecycleScope
 import com.it.atonin.databinding.FragmentProfileBinding
 import com.it.atonin.ui.base.BaseFragment
@@ -7,6 +8,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
+@SuppressLint("SetTextI18n")
 class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
 
     private val profileViewModel: ProfileViewModel by viewModel()
@@ -23,7 +25,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
 
             lifecycleScope.launch {
                 profileViewModel.getStoreCount().collectLatest {
-                    storeCount.text = it.toString()
+                    storeCount.text = "stores $it"
                 }
             }
         }
@@ -32,7 +34,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
     override fun bindViewModel() {
         lifecycleScope.launch {
             profileViewModel.flowBrandsCount.collectLatest {
-                binding.brandCount.text = it.toString()
+                binding.brandCount.text = "brands $it"
             }
         }
     }

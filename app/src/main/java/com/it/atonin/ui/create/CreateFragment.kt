@@ -184,7 +184,7 @@ class CreateFragment : BaseFragment<FragmentCreateBinding>() {
     }
 
     private fun isCreateProductButtonActive() =
-        storeName != null && productName != null && price != null
+        storeName != null && productName != null && price != null && brandName != null
 
     companion object {
         const val GET_IMAGE_FROM_GALLERY_CODE = 1002
