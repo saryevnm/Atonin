@@ -18,4 +18,7 @@ interface StoreDao {
 
     @Query("SELECT * FROM STORE")
     fun getStores(): Flow<List<Store>>
+
+    @Query("SELECT COUNT(storeId) FROM STORE WHERE store_owner_id =:userId")
+    fun getStoresCountOfUser(userId:Int): Flow<Int>
 }

@@ -83,7 +83,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), PopupMenu.OnMenuItemCl
 
     override fun bindViewModel() {
         lifecycleScope.launch {
-            homeViewModel.flowProductsNew.collectLatest {
+            homeViewModel.flowProducts.collectLatest {
                 productAdapter.submitList(ArrayList(it))
             }
         }

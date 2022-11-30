@@ -40,13 +40,14 @@ class ProductAdapter(
     inner class ProductViewHolder(private val binding: ItemListProductBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
+        @SuppressLint("SetTextI18n")
         fun bind(model: ProductWithBrandAndStore) {
             with(binding) {
                 root.setOnClickListener {
                     onProductClick(model)
                 }
                 productImage.setImage(model.product.image)
-                productPriceTxt.text = model.product.price
+                productPriceTxt.text = "${model.product.price} som"
                 productNameTxt.text = model.product.name
                 productBrandName.text = model.brand.name
                 productStoreName.text = model.store.name

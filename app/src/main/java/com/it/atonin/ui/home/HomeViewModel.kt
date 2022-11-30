@@ -4,7 +4,6 @@ import android.app.Application
 import androidx.lifecycle.viewModelScope
 import com.it.atonin.enum.SortTypes
 import com.it.atonin.model.Brand
-import com.it.atonin.model.Product
 import com.it.atonin.model.ProductWithBrandAndStore
 import com.it.atonin.model.Store
 import com.it.atonin.repository.ProductRepository
@@ -28,16 +27,14 @@ class HomeViewModel(
     private val selectedStores = arrayListOf<Int>()
     private var sortType = SortTypes.BY_PRICE_DESC
 
-    private val _flowProducts = MutableStateFlow<List<Product>>(listOf())
-    val flowProducts: Flow<List<Product>> = _flowProducts
 
-    private val _flowProductsNew = MutableStateFlow<List<ProductWithBrandAndStore>>(listOf())
-    val flowProductsNew: Flow<List<ProductWithBrandAndStore>> = _flowProductsNew
+    private val _flowProducts = MutableStateFlow<List<ProductWithBrandAndStore>>(listOf())
+    val flowProducts: Flow<List<ProductWithBrandAndStore>> = _flowProducts
 
     fun getProducts() {
         viewModelScope.launch {
             productRepository.getProducts(sortType, selectedBrands, selectedStores).collect {
-                _flowProductsNew.emit(it)
+                _flowProducts.emit(it)
             }
         }
     }

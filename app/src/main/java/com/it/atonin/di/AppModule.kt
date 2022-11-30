@@ -5,6 +5,7 @@ import androidx.room.Room
 import com.it.atonin.database.AppDataBase
 import com.it.atonin.repository.ProductRepository
 import com.it.atonin.repository.StoreRepository
+import com.it.atonin.repository.UserRepository
 import com.it.atonin.ui.create.CreateViewModel
 import com.it.atonin.ui.home.HomeViewModel
 import com.it.atonin.ui.profile.ProfileViewModel
@@ -27,8 +28,9 @@ val AppModule = module {
 
     single { ProductRepository(get()) }
     single { StoreRepository(get()) }
+    single { UserRepository(get()) }
 
     viewModel { HomeViewModel(get(), get(), get()) }
-    viewModel { CreateViewModel(get(),get(),get()) }
-    viewModel { ProfileViewModel(get()) }
+    viewModel { CreateViewModel(get(), get(), get()) }
+    viewModel { ProfileViewModel(get(), get(), get()) }
 }

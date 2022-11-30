@@ -124,7 +124,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                                 storeId,
                                 brandId,
                                 listImages[productId.toInt()],
-                                "${34 + productId * productId} som",
+                                (30+productId*productId).toInt(),
                                 Date().toString()
                             )
                         )

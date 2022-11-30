@@ -19,4 +19,10 @@ interface BrandDao {
 
     @Query("SELECT * FROM BRAND")
     fun getBrands(): Flow<List<Brand>>
+
+    @Query("SELECT COUNT(brandId) FROM BRAND WHERE brand_owner_id in (:storesIds)")
+    fun getBrandsCount(storesIds:List<Int>): Flow<Int>
+
+    @Query("SELECT * FROM BRAND WHERE brand_owner_id in (:storesIds)")
+    fun getBrandsOfGivenStoreIds(storesIds:List<Int>): Flow<List<Brand>>
 }

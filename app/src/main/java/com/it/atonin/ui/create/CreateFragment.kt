@@ -1,5 +1,6 @@
 package com.it.atonin.ui.create
 
+import android.annotation.SuppressLint
 import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.provider.MediaStore
@@ -31,7 +32,7 @@ class CreateFragment : BaseFragment<FragmentCreateBinding>() {
     private var productName: String? = null
     private var brandName: String? = null
     private var storeName: String? = null
-    private var price: String? = null
+    private var price: Int? = null
     private var image: String? = null
 
     private var storeList = emptyList<Store>()
@@ -41,16 +42,48 @@ class CreateFragment : BaseFragment<FragmentCreateBinding>() {
         arguments?.parcelable(PRODUCT) as ProductWithBrandAndStore?
     }
 
-    override fun bindViewModel() {}
+    override fun bindViewModel() {
+        lifecycleScope.launch {
+            createViewModel.flowBrands.collectLatest {
+                brandList = it
+                val brandsAdapter = ArrayAdapter(
+                    requireContext(),
+                    R.layout.drop_down_item,
+                    it.map { region -> region.name }.toTypedArray()
+                )
+                binding.brandInput.setAdapter(brandsAdapter)
+                model?.let { binding.brandInput.setText(model?.brand?.name, false) } ?: kotlin.run {
+                    binding.brandInput.text?.clear()
+                }
+            }
+        }
 
+        lifecycleScope.launch {
+            createViewModel.flowStores.collectLatest {
+                storeList = it
+                val storesAdapter = ArrayAdapter(
+                    requireContext(),
+                    R.layout.drop_down_item,
+                    it.map { store -> store.name }.toTypedArray()
+                )
+                binding.storeInput.setAdapter(storesAdapter)
+                model?.let { binding.storeInput.setText(model?.store?.name, false) } ?: kotlin.run {
+                    binding.storeInput.text?.clear()
+                }
+            }
+        }
+    }
+
+    @SuppressLint("SetTextI18n")
     override fun setupView() {
         setUpListeners()
-
+        createViewModel.getStoresOfUser()
+        createViewModel.getBrands()
         with(binding) {
 
             model?.let {
                 nameInput.setText(it.product.name)
-                priceInput.setText(it.product.price)
+                priceInput.setText(it.product.price.toString())
                 profileImg.setImage(it.product.image)
                 image = it.product.image
                 createProductBtn.text = context?.getString(R.string.update)
@@ -59,36 +92,6 @@ class CreateFragment : BaseFragment<FragmentCreateBinding>() {
                 priceInput.text?.clear()
                 profileImg.setImage("")
                 createProductBtn.text = context?.getString(R.string.create)
-            }
-
-            lifecycleScope.launch {
-                createViewModel.getBrands().collectLatest {
-                    brandList = it
-                    val brandsAdapter = ArrayAdapter(
-                        requireContext(),
-                        R.layout.drop_down_item,
-                        it.map { region -> region.name }.toTypedArray()
-                    )
-                    brandInput.setAdapter(brandsAdapter)
-                    model?.let { brandInput.setText(model?.brand?.name, false) } ?: kotlin.run {
-                        brandInput.text?.clear()
-                    }
-                }
-            }
-
-            lifecycleScope.launch {
-                createViewModel.getStores().collectLatest {
-                    storeList = it
-                    val storesAdapter = ArrayAdapter(
-                        requireContext(),
-                        R.layout.drop_down_item,
-                        it.map { store -> store.name }.toTypedArray()
-                    )
-                    storeInput.setAdapter(storesAdapter)
-                    model?.let { storeInput.setText(model?.store?.name, false) } ?: kotlin.run {
-                        storeInput.text?.clear()
-                    }
-                }
             }
         }
     }
@@ -126,7 +129,7 @@ class CreateFragment : BaseFragment<FragmentCreateBinding>() {
                 price = if (it?.length == 0) {
                     null
                 } else {
-                    it.toString() + " som"
+                    it.toString().toInt()
                 }
                 createProductBtn.isEnabled = isCreateProductButtonActive()
             }
@@ -161,7 +164,7 @@ class CreateFragment : BaseFragment<FragmentCreateBinding>() {
         storeId = storeList.firstOrNull { it.name == storeName }?.storeId ?: 0,
         brandId = brandList.firstOrNull { it.name == brandName }?.brandId,
         image = image ?: "",
-        price = price ?: "",
+        price = price ?: 0,
         date = Date().toString()
     )
 

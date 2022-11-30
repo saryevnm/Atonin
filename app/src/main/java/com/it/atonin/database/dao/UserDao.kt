@@ -1,10 +1,8 @@
 package com.it.atonin.database.dao
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Update
+import androidx.room.*
 import com.it.atonin.model.User
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface UserDao {
@@ -15,4 +13,6 @@ interface UserDao {
     @Update
     fun updateUser(user: User)
 
+    @Query("SELECT * FROM USER WHERE id =:userId")
+    fun getUser(userId: Int): Flow<User>
 }

@@ -15,6 +15,6 @@ data class Product(
     @ColumnInfo(name = "store_id_fk") val storeId: Int,
     @ColumnInfo(name = "brand_id_fk") val brandId: Int?,
     @ColumnInfo(name = "product_image") val image: String,
-    @ColumnInfo(name = "product_price") val price: String,
+    @ColumnInfo(name = "product_price") val price: Int,
     @ColumnInfo(name = "product_date") var date: String,
 ) : Parcelable
