@@ -10,4 +10,4 @@ data class User(
     @ColumnInfo(name = "name") val name: String,
     @ColumnInfo(name = "image") val image: String,
     @ColumnInfo(name = "phone_number") val phoneNumber: String,
-    )
+)

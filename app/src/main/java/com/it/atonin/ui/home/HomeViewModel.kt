@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.it.atonin.enum.SortTypes
 import com.it.atonin.model.Brand
 import com.it.atonin.model.Product
+import com.it.atonin.model.ProductWithBrandAndStore
 import com.it.atonin.model.Store
 import com.it.atonin.repository.ProductRepository
 import com.it.atonin.repository.StoreRepository
@@ -30,10 +31,13 @@ class HomeViewModel(
     private val _flowProducts = MutableStateFlow<List<Product>>(listOf())
     val flowProducts: Flow<List<Product>> = _flowProducts
 
+    private val _flowProductsNew = MutableStateFlow<List<ProductWithBrandAndStore>>(listOf())
+    val flowProductsNew: Flow<List<ProductWithBrandAndStore>> = _flowProductsNew
+
     fun getProducts() {
         viewModelScope.launch {
             productRepository.getProducts(sortType, selectedBrands, selectedStores).collect {
-                _flowProducts.emit(it)
+                _flowProductsNew.emit(it)
             }
         }
     }
@@ -49,20 +53,20 @@ class HomeViewModel(
     fun getCheckedBrands() = selectedBrands
 
     fun addSelectedBrand(brand: Brand) {
-        selectedBrands.add(brand.id)
+        selectedBrands.add(brand.brandId)
     }
 
     fun removeSelectedBrand(brand: Brand) {
-        val index = selectedBrands.indexOfFirst { it == brand.id }
+        val index = selectedBrands.indexOfFirst { it == brand.brandId }
         selectedBrands.removeAt(index)
     }
 
     fun addSelectedStore(store: Store) {
-        selectedStores.add(store.id)
+        selectedStores.add(store.storeId)
     }
 
     fun removeSelectedStore(store: Store) {
-        val index = selectedStores.indexOfFirst { it == store.id }
+        val index = selectedStores.indexOfFirst { it == store.storeId }
         selectedStores.removeAt(index)
     }
 

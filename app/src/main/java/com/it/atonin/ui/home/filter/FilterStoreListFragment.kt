@@ -1,12 +1,16 @@
 package com.it.atonin.ui.home.filter
 
 import androidx.lifecycle.lifecycleScope
+import com.it.atonin.R
 import com.it.atonin.databinding.FragmentFilterStoreListBinding
 import com.it.atonin.model.Store
 import com.it.atonin.ui.base.BaseFragment
 import com.it.atonin.ui.home.HomeViewModel
 import com.it.atonin.ui.home.filter.adapter.FilterListAdapter
+import com.it.atonin.utils.getFragmentNavController
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class FilterStoreListFragment : BaseFragment<FragmentFilterStoreListBinding>() {
@@ -19,16 +23,26 @@ class FilterStoreListFragment : BaseFragment<FragmentFilterStoreListBinding>() {
         }
     }
 
+    private val navController by lazy {
+        getFragmentNavController(R.id.filter_nav_host)
+    }
+
     override fun setupView() {
         binding.storeRv.adapter = storesAdapter
         lifecycleScope.launch {
             homeViewModel.getStores().collect { storesList ->
                 val data = storesList.map { store -> store.copy() }
                 homeViewModel.getCheckedStores().forEach { checkedOne ->
-                    data.firstOrNull { checkedOne == it.id }?.isSelected = true
+                    data.firstOrNull { checkedOne == it.storeId }?.isSelected = true
                 }
-                storesAdapter.setList(data)
+                withContext(Dispatchers.Main) {
+                    storesAdapter.setList(data)
+                }
             }
+        }
+
+        binding.storeBackContainer.setOnClickListener {
+            navController?.popBackStack()
         }
     }
 

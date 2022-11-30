@@ -13,7 +13,7 @@ interface StoreDao {
     @Update
     fun updateStore(store: Store)
 
-    @Query("SELECT * FROM STORE WHERE owner_id =:userId")
+    @Query("SELECT * FROM STORE WHERE store_owner_id =:userId")
     fun getStoresOfUser(userId: Int): Flow<List<Store>>
 
     @Query("SELECT * FROM STORE")

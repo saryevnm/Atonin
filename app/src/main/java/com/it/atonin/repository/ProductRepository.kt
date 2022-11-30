@@ -3,13 +3,15 @@ package com.it.atonin.repository
 import com.it.atonin.database.AppDataBase
 import com.it.atonin.enum.SortTypes
 import com.it.atonin.model.Product
+import com.it.atonin.model.ProductWithBrandAndStore
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 
 class ProductRepository(private val db: AppDataBase) {
 
     fun getProducts(
         sortTypes: SortTypes, selectedBrands: List<Int>, selectedStores: List<Int>
-    ): Flow<List<Product>> {
+    ): Flow<List<ProductWithBrandAndStore>> {
         with(db.getProductDao()) {
             return when {
                 selectedBrands.isNotEmpty() && selectedStores.isNotEmpty() -> {
@@ -43,5 +45,13 @@ class ProductRepository(private val db: AppDataBase) {
                 }
             }
         }
+    }
+
+    fun createProduct(product: Product) {
+        db.getProductDao().addProduct(product)
+    }
+
+    fun updateProduct(product: Product) {
+        db.getProductDao().updateProduct(product)
     }
 }

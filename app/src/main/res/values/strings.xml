@@ -8,4 +8,6 @@
     <string name="stores">Магазины</string>
     <string name="brands">Бренды</string>
     <string name="filter">Фильтр</string>
+    <string name="create">Создать</string>
+    <string name="update">Обновить</string>
 </resources>

@@ -4,14 +4,17 @@ import android.annotation.SuppressLint
 import android.view.Gravity
 import android.view.MenuItem
 import android.widget.PopupMenu
+import androidx.core.os.bundleOf
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.it.atonin.R
 import com.it.atonin.databinding.FragmentHomeBinding
 import com.it.atonin.enum.SortTypes
-import com.it.atonin.model.Product
+import com.it.atonin.model.ProductWithBrandAndStore
 import com.it.atonin.ui.base.BaseFragment
+import com.it.atonin.ui.create.CreateFragment.Companion.PRODUCT
 import com.it.atonin.ui.home.adapter.ProductAdapter
 import com.it.atonin.utils.show
 import kotlinx.coroutines.flow.collectLatest
@@ -57,8 +60,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), PopupMenu.OnMenuItemCl
         }
     }
 
-    private fun onProductClick(product: Product) {
-
+    private fun onProductClick(product: ProductWithBrandAndStore) {
+        findNavController().navigate(R.id.createFragment, bundleOf(PRODUCT to product))
     }
 
     override fun onMenuItemClick(p0: MenuItem?): Boolean {
@@ -80,7 +83,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), PopupMenu.OnMenuItemCl
 
     override fun bindViewModel() {
         lifecycleScope.launch {
-            homeViewModel.flowProducts.collectLatest {
+            homeViewModel.flowProductsNew.collectLatest {
                 productAdapter.submitList(ArrayList(it))
             }
         }

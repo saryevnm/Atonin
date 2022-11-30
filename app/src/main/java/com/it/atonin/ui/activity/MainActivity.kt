@@ -1,5 +1,6 @@
 package com.it.atonin.ui.activity
 
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.it.atonin.R
@@ -13,6 +14,8 @@ import com.it.atonin.ui.base.BaseActivity
 import com.it.atonin.utils.SHARED_PREFERENCES_IS_DATA_INIT
 import com.it.atonin.utils.get
 import com.it.atonin.utils.put
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import java.util.*
 
@@ -47,49 +50,89 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQfZcTXQmmdJ7nLKeCVaN98JwC7Q8cjuZ-aGw&usqp=CAU"
     )
 
+    private val storesList = listOf(
+        "Arzan shop",
+        "Tok shop",
+        "BrandMixx"
+    )
+
+    private val brandList = listOf(
+        "Addidas",
+        "Puma",
+        "Zara",
+        "Gucci",
+        "Nike",
+        "Louis Vuitton",
+        "Chanel",
+        "Hermès",
+        "Chow Tai Fook"
+    )
+
+    private val productNames = listOf(
+        "Комфортная и стильная толстовка\n" +
+                "Nike Tech Fleece ",
+        "ПОДБОРКА КРОССОВОК\n" +
+                "из новой коллекции!",
+        "Водоотталкивающая парка\n" +
+                "NIKE JORDAN ESS",
+        "Эксклюзивные кроссовки\n" +
+                "NIKE WMNS Nike",
+        "Удобная и стильная шапка\n" +
+                "JORDAN Jumpman",
+        "Свободное и стильное Худи\n" +
+                "Nike Dri-FIT",
+        "Свободное и стильное Худи\n" +
+                "Nike Dri-FIT",
+        "Флисовая худи JORDAN\n" +
+                "Essentials - last size",
+        "Эстетичный образ Nike AIR -\n" +
+                "это идеальный баланс стиля"
+    )
+
     private fun initData() {
-        with(db.getUserDao()) {
-            addUser(
-                User(
-                    0,
-                    "Nurumbet",
-                    "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/Flag_of_Kyrgyzstan.svg/240px-Flag_of_Kyrgyzstan.svg.png",
-                    "+996509803311"
-                )
-            )
-        }
-        with(db.getStoreDao()) {
-            var productId = 0
-            var brandId = 0
-            var storeId = 0
-            repeat(3) {
-                addStore(
-                    Store(
-                        storeId, "store $storeId", 0, "+996509803311", "bishkek"
+        lifecycleScope.launch(Dispatchers.IO) {
+            with(db.getUserDao()) {
+                addUser(
+                    User(
+                        0,
+                        "Nurumbet",
+                        "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/Flag_of_Kyrgyzstan.svg/240px-Flag_of_Kyrgyzstan.svg.png",
+                        "+996509803311"
                     )
                 )
+            }
+            with(db.getStoreDao()) {
+                var productId = 0L
+                var brandId = 0
+                var storeId = 0
                 repeat(3) {
-                    db.getBrandDao().addBrand(
-                        Brand(
-                            brandId, "brand $brandId", null, brandId, "date $brandId"
+                    addStore(
+                        Store(
+                            storeId, storesList[storeId], 0, "+996509803311", "bishkek"
                         )
                     )
-                    db.getProductDao().addProduct(
-                        Product(
-                            productId,
-                            "name $productId",
-                            "description $productId",
-                            storeId,
-                            brandId,
-                            listImages[productId],
-                            "${34 + productId * productId} som",
-                            Date().toString()
+                    repeat(3) {
+                        db.getBrandDao().addBrand(
+                            Brand(
+                                brandId, brandList[brandId], null, storeId, Date().toString()
+                            )
                         )
-                    )
-                    productId++
-                    brandId++
+                        db.getProductDao().addProduct(
+                            Product(
+                                productId,
+                                productNames[productId.toInt()],
+                                storeId,
+                                brandId,
+                                listImages[productId.toInt()],
+                                "${34 + productId * productId} som",
+                                Date().toString()
+                            )
+                        )
+                        productId++
+                        brandId++
+                    }
+                    storeId++
                 }
-                storeId++
             }
         }
     }

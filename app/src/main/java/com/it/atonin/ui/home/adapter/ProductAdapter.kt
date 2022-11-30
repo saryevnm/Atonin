@@ -6,16 +6,17 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.it.atonin.databinding.ItemListProductBinding
 import com.it.atonin.model.Product
+import com.it.atonin.model.ProductWithBrandAndStore
 import com.it.atonin.utils.setImage
 
 class ProductAdapter(
-    private val onProductClick: (product: Product) -> Unit
+    private val onProductClick: (product: ProductWithBrandAndStore) -> Unit
 ) : RecyclerView.Adapter<ProductAdapter.ProductViewHolder>() {
 
-    private var data = arrayListOf<Product>()
+    private var data = arrayListOf<ProductWithBrandAndStore>()
 
     @SuppressLint("NotifyDataSetChanged")
-    fun submitList(list: ArrayList<Product>) {
+    fun submitList(list: ArrayList<ProductWithBrandAndStore>) {
         data = list
         notifyDataSetChanged()
     }
@@ -39,13 +40,16 @@ class ProductAdapter(
     inner class ProductViewHolder(private val binding: ItemListProductBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(product: Product) {
+        fun bind(model: ProductWithBrandAndStore) {
             with(binding) {
                 root.setOnClickListener {
-                    onProductClick(product)
+                    onProductClick(model)
                 }
-                productImage.setImage(product.image)
-                productPriceTxt.text = product.price
+                productImage.setImage(model.product.image)
+                productPriceTxt.text = model.product.price
+                productNameTxt.text = model.product.name
+                productBrandName.text = model.brand.name
+                productStoreName.text = model.store.name
             }
         }
     }

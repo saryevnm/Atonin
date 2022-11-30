@@ -22,13 +22,13 @@ val AppModule = module {
             androidContext(),
             AppDataBase::class.java,
             DEFAULT_DB_NAME
-        ).allowMainThreadQueries().build()
+        ).build()
     }
 
     single { ProductRepository(get()) }
     single { StoreRepository(get()) }
 
-    viewModel { HomeViewModel(get(), get(),get()) }
-    viewModel { CreateViewModel(get()) }
+    viewModel { HomeViewModel(get(), get(), get()) }
+    viewModel { CreateViewModel(get(),get(),get()) }
     viewModel { ProfileViewModel(get()) }
 }
